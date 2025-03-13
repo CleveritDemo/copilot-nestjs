@@ -144,14 +144,12 @@ If you encounter this error: `Cannot find module '@nestjs/mapped-types' or its c
 
 **Install the @nestjs/swagger** or **remove the import statement** from the `update-product.dto.ts` file.
 
-	```typescript
+```typescript
+import { CreateProductDto } from './create-product.dto';
+export class UpdateProductDto extends CreateProductDto {}
+```
 
-	import { CreateProductDto } from './create-product.dto';
-
-	export class UpdateProductDto extends CreateProductDto {}
-	```
-
-Create a file `product.service.ts` in the src/products directory.
+**Create a `product.service.ts` file** in the src/products directory.
 
 ```typescript
 import { Injectable } from '@nestjs/common';
@@ -214,7 +212,7 @@ If you encounter this error: `Type 'Product | null' is not assignable to type 'P
 
 make sure to import NotFoundException from `@nestjs/common`.
 
-Create the `product.controller.ts` file in the src/products directory.
+**Create the `product.controller.ts` file** in the src/products directory.
 
 ```typescript
 import {
@@ -315,9 +313,9 @@ export class AppModule {}
 
 👤 Prompt:
 
-    ```bash
-    gh copilot suggest "how to run a postgres using docker in my local"
-    ```
+```bash
+gh copilot suggest "how to run a postgres using docker in my local"
+```
 
 🤖 Response:
 
@@ -341,7 +339,7 @@ After filling out the form, click on the `Test Connection` button to check if th
 
 ![Creating DB](./assets/creating-db.png)
 
-**update the `app.module.ts` file** in the src directory.
+**Update the `app.module.ts` file** in the src directory.
 
 ```typescript
 import { Module } from '@nestjs/common';
@@ -447,7 +445,7 @@ import { ProductModule } from './products/product.module';
 export class AppModule {}
 ```
 
-update the `main.ts` file in the src directory.
+**Update the `main.ts` file** in the src directory.
 
 ```typescript
 import { NestFactory } from '@nestjs/core';
@@ -762,7 +760,7 @@ export function setupSwagger(app: INestApplication): void {
 }
 ```
 
-Update the `main.ts` file in the src directory to include the Swagger configuration.
+**Update the `main.ts` file** in the src directory to include the Swagger configuration.
 
 ```typescript
 // filepath: src/main.ts
@@ -905,7 +903,7 @@ Update the `findOne` method in the `product.service.ts` file to use the OpenAISe
   }
 ```
 
-Update the `product.module.ts` file in the src/products directory to include the OpenAIService.
+**Update the `product.module.ts` file** in the src/products directory to include the OpenAIService.
 
 ```typescript
 @Module({
