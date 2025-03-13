@@ -4,10 +4,12 @@ import { ProductService } from './product.service';
 import { ProductController } from './product.controller';
 import { Product } from './entities/product.entity';
 import { ProductSeederService } from './product-seeder.service';
+import { HttpModule } from '@nestjs/axios';
+import { OpenAIService } from './openai.service';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([Product])],
-	providers: [ProductService, ProductSeederService],
+	imports: [TypeOrmModule.forFeature([Product]), HttpModule],
+	providers: [ProductService, ProductSeederService, OpenAIService],
 	controllers: [ProductController],
 })
 export class ProductModule {}
