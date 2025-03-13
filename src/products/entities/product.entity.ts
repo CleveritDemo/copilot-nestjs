@@ -13,4 +13,16 @@ export class Product {
 
 	@Column()
 	image: string;
+
+	@Column('decimal')
+	price: number;
+
+	@Column('int')
+	quantity: number;
+
+	@Column('boolean')
+	isAvailable: boolean;
+
+	@Column()
+	category: string;
 }
