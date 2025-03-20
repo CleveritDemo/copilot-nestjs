@@ -721,6 +721,22 @@ Save the file in the `src/products` directory as `product.service.spec.ts`.
 
 **Homework**: Generate unit tests for the remaining functions in the product service by following the same steps.
 
+#### ⚠️ Troubleshooting
+
+If the unit test fail for the `findOne` method. This can be fixed by selecting the error message on the VSCode terminal, and using the `/fix` command with the following shortcuts: 
+```plaintext
+@workspace /fix #terminalLastCommand #terminalSelection
+```
+
+Solution: Add this line of code at the end of the `beforeEach` function
+```js
+
+beforeEach(async () => {
+	/* Rest of the code...*/
+	jest.clearAllMocks(); // Clear any previous calls to mocks
+});
+```
+
 ### 7. Add Swagger Documentation
 
 In this step, we will ask GitHub Copilot to provide the necessary code to add Swagger documentation to the NestJS application.
