@@ -473,6 +473,12 @@ Para usar Copilot Edits, haz clic en la opción Copilot Edits en la esquina supe
 
 ![alt text](./assets/open-copilot-edits.png)
 
+### ⚠️ **Importante**
+
+Hay un cambio en la forma de acceder a las ediciones de Copilot. Para editar con Copilot, haga clic en el menú desplegable "Ask" situado en la parte inferior derecha de la ventana de chat de Copilot y luego elija "Edit" de las opciones proporcionadas en el menú desplegable.
+
+![alt text](./assets/open-copilot-edits2.png)
+
 Una vez que hayas abierto Copilot Edits, agrega los siguientes archivos a Copilot Edits: `create-product.dto.ts`, `product.entity.ts`, `product.service.ts`, `product.controller.ts`
 
 ![alt text](./assets/add-files-to-copilot-edit.png)
