@@ -1,669 +1,542 @@
-# Developing advanced solutions with Nest, Jest and Postgres (TypeORM) using GitHub Copilot.
+<div align="center">
 
-## 💫 Overview
+  # 🚀 Copilot para NestJS: Del Prompt al Código Seguro
 
-In this hands-on project, we will develop a NestJS application integrated with a PostgreSQL database using TypeORM. The project will cover setting up the NestJS configuration with an `.env` file, establishing a connection to the PostgreSQL database, and implementing CRUD operations. Additionally, we will enhance the project with Swagger documentation, utilize Azure Open AI for better product descriptions, and create comprehensive unit tests using Jest.
+  ### Workshop práctico de GitHub Copilot para desarrolladores NestJS
 
-## 🎯️ Objectives
+  [![GitHub Copilot](https://img.shields.io/badge/GitHub_Copilot-000000?style=for-the-badge&logo=githubcopilot&logoColor=white)](https://github.com/features/copilot)
+  [![NestJS](https://img.shields.io/badge/NestJS-EA2845?style=for-the-badge&logo=nestjs&logoColor=white)](https://nestjs.com/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+  [![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)](https://jestjs.io/)
+  [![OWASP](https://img.shields.io/badge/OWASP_Top_10-000000?style=for-the-badge&logo=owasp&logoColor=white)](https://owasp.org/Top10/)
 
-- Using GitHub Copilot in the CLI to create a PostgreSQL container.
-- Setting up the Nest Config using .env file.
-- Connect to Postgres Database using TypeORM.
-- Create Seeder file to populate the database.
-- Create Update and Delete Methods.
-- Create a Better description of the products using Azure Open AI.
-- Add Swagger Documentation.
-- Create README.md file with Developer Docs of the project.
-- Export Chat to Developer Docs.
-- Create Unit Testing for Services
+  🇪🇸 **Español (Latinoamérica)** · [🇺🇸 English](./README_EN.md)
 
-## 🛠️ Installation requirements
+</div>
 
-- VS Code
-- Docker for Desktop
-- Node Installed (nvm optional)
-- GitHub CLI + GitHub Copilot Extension Enabled
-- Insomnia or Postman or any Rest Client Installed.
-- DBeaver or any Database Client Installed.
+---
 
-## ℹ️ Copilot Instructions
+**Esta capacitación práctica** te enseña a aprovechar **GitHub Copilot** en un flujo real de desarrollo **NestJS**: desde las distintas superficies de interacción (completions, NES, Inline Chat, Chat con modos Ask/Edit/Agent, Copilot CLI y Code Review), pasando por técnicas para **mejorar la calidad** de las respuestas con contexto e instrucciones personalizadas, hasta **generar código**, **crear pruebas unitarias** y **detectar y mitigar vulnerabilidades** de seguridad.
 
-In this activity, we will be using copilot instructions to personalize and enhance the chat responses by providing contextual information through a repository file, improving the quality and relevance of Copilot's assistance.
+> 📚 Documentación oficial de las herramientas usadas en este taller:
+>
+> - [GitHub Copilot Chat](https://docs.github.com/en/copilot/how-tos/use-copilot-chat)
+> - [Custom instructions & prompt files](https://docs.github.com/en/copilot/customizing-copilot)
+> - [NestJS Documentation](https://docs.nestjs.com/)
+> - [Jest Testing Framework](https://jestjs.io/docs/getting-started)
+> - [OWASP Top 10 (2021)](https://owasp.org/Top10/)
+> - [Copilot Code Review](https://docs.github.com/en/copilot/using-github-copilot/code-review)
 
-```
-For this Nest JS project, we will use @nestjs/typeorm for persistence and Postgres as the database, so please take this into account when answering the questions.
+---
 
-We will also use the @nestjs/swagger module to generate API documentation.
+## 📋 Tabla de Contenidos
 
-We will use class-validator and class-transformer to validate and transform the data.
+1. [🚀 Preparar el laboratorio](#-preparar-el-laboratorio)
+2. [🎛️ Paso 1. Métodos de Interacción de GitHub Copilot](#️-paso-1-métodos-de-interacción-de-github-copilot)
+3. [🧭 Paso 2. Mejorar las Interacciones con Contexto y Personalización](#-paso-2-mejorar-las-interacciones-con-contexto-y-personalización)
+4. [🛠️ Paso 3. Generación de Código y Refactoring](#️-paso-3-generación-de-código-y-refactoring)
+   - [3.1 Crear el módulo `products` (Agent Mode)](#31-crear-el-módulo-products-agent-mode)
+   - [3.2 Añadir un campo cross-file (Edit Mode)](#32-añadir-un-campo-cross-file-edit-mode)
+   - [3.3 Refactor puntual (Inline Chat)](#33-refactor-puntual-inline-chat)
+   - [3.4 Traducir código externo (opcional)](#34-traducir-código-externo-opcional)
+5. [🧪 Paso 4. Creación de Pruebas Unitarias con Jest](#-paso-4-creación-de-pruebas-unitarias-con-jest)
+6. [🛡️ Paso 5. Detección y Mitigación de Vulnerabilidades](#️-paso-5-detección-y-mitigación-de-vulnerabilidades)
 
-We will use '@nestjs/testing' for testing. Generate tests for the services and controllers when you are asked to write tests using the jest framework.
+---
 
-Do not use `any` to define the types of the variables.
+## ⏱️ Duración estimada
 
-Use dependency versions that are compatible with the current version of this Nest JS project.
+| Bloque                                                     | Tiempo      |
+| ---------------------------------------------------------- | ----------- |
+| 🚀 Preparación del laboratorio                             | 5 min       |
+| 🎛️ Paso 1 — Métodos de Interacción                         | 10 min      |
+| 🧭 Paso 2 — Mejorar las Interacciones                      | 10 min      |
+| 🛠️ Paso 3 — Generación de Código y Refactoring             | 15 min      |
+| 🧪 Paso 4 — Pruebas Unitarias                              | 10 min      |
+| 🛡️ Paso 5 — Detección y Mitigación de Vulnerabilidades     | 10 min      |
+| **Total**                                                  | **~60 min** |
 
-Use modules to organize the code and separate concerns.
+---
 
-Use `uuid` to generate the IDs and use the `uuid` version 4 standard.
-```
+## 🎯 Objetivos de aprendizaje
 
-## Before you start
+Al finalizar este workshop serás capaz de:
 
-1. **Clone the repository**
+- ✅ Identificar y usar las distintas **superficies de interacción** de Copilot (completions, NES, Inline Chat, Ask/Edit/Agent, Copilot CLI, Code Review) y saber cuál elegir para cada tarea.
+- ✅ Elevar la calidad de las respuestas con **variables de contexto** (`#codebase`, `#file`, `#problems`, `#terminalLastCommand`…), **selección de modelo**, **custom instructions** (`.github/copilot-instructions.md`, `*.instructions.md` con `applyTo`), **prompt files** (`*.prompt.md`) y **chat modes** personalizados.
+- ✅ Construir un módulo NestJS completo (entity, DTOs, service, controller, module) con **Agent Mode**, extenderlo con **Edit Mode** y pulirlo con **Inline Chat**.
+- ✅ Generar pruebas unitarias con Jest y `@nestjs/testing` usando `/tests`, y **arreglar tests fallidos** con Agent Mode + `#terminalLastCommand` + `#problems`.
+- ✅ Detectar vulnerabilidades comunes del **OWASP Top 10** con **Copilot Code Review** y aplicar mitigaciones concretas guiadas por instrucciones de seguridad reutilizables.
 
-   ```bash
-   git clone https://github.com/CleveritDemo/copilot-nestjs
-   ```
+---
 
-2. **Navigate to the project directory**
+## 📚 Requisitos previos
 
-   ```bash
-   cd copilot-nestjs
-   ```
+Antes de comenzar, asegurate de tener:
 
-3. **Install the dependencies**
+- [Visual Studio Code](https://code.visualstudio.com/) (última versión estable).
+- Extensiones **GitHub Copilot** y **GitHub Copilot Chat** instaladas y activadas.
+- Cuenta con **suscripción activa** de GitHub Copilot (Free, Pro, Business o Enterprise).
+- [Node.js 20 LTS o superior](https://nodejs.org/) (recomendado 22 LTS).
+- [Git](https://git-scm.com/downloads).
+- [GitHub CLI](https://cli.github.com/) con la extensión **Copilot CLI**:
 
-   ```bash
-   npm install
-   ```
+  ```bash
+  gh extension install github/gh-copilot
+  ```
 
-## 🖥️ Step-by-step
+- (Opcional) [Docker Desktop](https://www.docker.com/products/docker-desktop/) si querés persistir datos en Postgres para los ejercicios avanzados.
 
-### 1. Create Products Module
-
-👤 Prompt:
+Verificá tu instalación:
 
 ```bash
-@workspace How to Create an entity called products, this entity has 4 attributes, id: string, name: string, description: string, image: string. Also generate the service with basic CRUD operations and the necessary DTOs.
+node --version
+npm --version
+git --version
+code --version
+gh copilot --version
 ```
 
-🤖 Response:
+---
 
-Copilot should respond with the following code:
+## 🚀 Preparar el laboratorio
 
-**Install necessary dependencies**:
+### 1. Clonar el repo y cambiar a la rama del workshop
 
 ```bash
-npm install @nestjs/typeorm typeorm pg class-validator class-transformer uuid
+git clone https://github.com/CleveritDemo/copilot-nestjs
+cd copilot-nestjs
+git checkout updated-main
 ```
 
-**Create the Product entity**: Create a file product.entity.ts in the src/products/entities directory.
+### 2. Instalar dependencias
+
+```bash
+npm install
+```
+
+### 3. Abrir en VS Code
+
+```bash
+code .
+```
+
+### 4. Validar que Copilot responde
+
+Abrí la vista Chat (`Ctrl+Alt+I` en Windows/Linux · `Cmd+Ctrl+I` en macOS) y probá:
+
+```text
+Hola Copilot, listá los scripts de npm disponibles en este proyecto usando #codebase.
+```
+
+Si obtenés respuesta, todo está listo. Si no, inicia sesión desde la paleta de comandos con **GitHub: Sign in**.
+
+### 5. (Opcional) Levantar Postgres
+
+Sólo si vas a hacer los ejercicios que requieren base de datos real:
+
+```bash
+docker run --name postgres-workshop `
+  -e POSTGRES_PASSWORD=workshop `
+  -e POSTGRES_DB=copilot-nestjs `
+  -p 5432:5432 -d postgres:16
+```
+
+> [!NOTE]
+> El bloque anterior usa continuación de línea de PowerShell (backtick `` ` ``). En bash/zsh reemplazá los backticks por `\`.
+
+### 6. Familiarizate con el selector de modelo
+
+En la parte inferior de la caja de chat vas a ver el **selector de modelo**. Confirmá que podés elegir entre los modelos que ofrece tu plan (por ejemplo Claude Sonnet, GPT-5, o razonadores). Usaremos varios durante el workshop.
+
+> [!TIP]
+> Para tareas de generación grande o refactor complejo, elegí un modelo grande. Para completions y edits pequeños, un modelo rápido rinde mejor.
+
+---
+
+## 🎛️ Paso 1. Métodos de Interacción de GitHub Copilot
+
+**Objetivo:** conocer cada superficie de interacción de Copilot y cuándo usar cada una.
+
+### 1.1 Panorama general
+
+GitHub Copilot ya no es sólo autocompletado. Hoy expone múltiples superficies, cada una optimizada para un contexto distinto:
+
+| Superficie                          | Atajo / Ubicación                                     | Cuándo usarla                                                                       |
+| ----------------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| **Code Completions** (ghost text)   | Sugerencia automática al escribir; `Tab` para aceptar | Escribís código y querés autocompletar líneas o bloques.                            |
+| **Next Edit Suggestions (NES)**    | Aparece tras una edición; `Tab` para saltar/aceptar   | Copilot predice la siguiente edición relacionada.                                   |
+| **Inline Chat**                     | `Ctrl+I` / `Cmd+I` sobre la selección o cursor        | Modificar código concreto sin salir del editor.                                     |
+| **Chat View — modo Ask**            | Vista Chat, selector *Ask*                            | Preguntas conceptuales, exploración, *"¿cómo funciona esto?"*.                      |
+| **Chat View — modo Edit**           | Vista Chat, selector *Edit*                           | Editar varios archivos a la vez con vista previa antes de aplicar.                  |
+| **Chat View — modo Agent**          | Vista Chat, selector *Agent*                          | Tareas multi-paso donde Copilot lee, edita, ejecuta comandos y corre tests.         |
+| **Quick Chat**                      | `Ctrl+Shift+I` / `Cmd+Shift+I`                        | Pregunta rápida sin abrir el panel completo.                                        |
+| **Smart Actions** (menú contextual) | Clic derecho → *Copilot*                              | Acciones: *Explain*, *Fix*, *Review*, *Generate Docs*, *Generate Tests*.            |
+| **Copilot CLI**                     | Terminal: `gh copilot suggest` / `explain`            | Sugerencia y explicación de comandos de shell.                                      |
+| **Copilot Code Review**             | Botón *Review* en chat o en un PR                     | Revisión asistida de un diff antes de commitear/mergear.                            |
+
+> [!IMPORTANT]
+> **Ya no existe** el panel independiente "Copilot Edits" que aparecía en versiones anteriores. Ahora Edit es un **modo** dentro de la Chat View, junto a Ask y Agent.
+
+### 1.2 Probá 4 superficies en orden
+
+#### 1️⃣ Code Completions
+
+Abrí [`src/app.service.ts`](./src/app.service.ts) y debajo de `getHello()` empezá a escribir:
 
 ```typescript
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+getGreeting(name: string):
+```
 
-@Entity()
-export class Product {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+Esperá 1 segundo. Copilot completa la firma y el cuerpo. Presioná `Tab` para aceptar.
 
-  @Column()
-  name: string;
+#### 2️⃣ Next Edit Suggestions (NES)
 
-  @Column()
-  description: string;
+En el mismo archivo, cambiá `getHello()` para que devuelva `'Hola Mundo!'`. Copilot detectará que probablemente querés cambiar el test en [`src/app.controller.spec.ts`](./src/app.controller.spec.ts) y te ofrecerá saltar allí. `Tab` para navegar, `Tab` para aceptar.
 
-  @Column()
-  image: string;
+#### 3️⃣ Inline Chat
+
+Seleccioná el método `getHello()` y presioná `Ctrl+I` (`Cmd+I` en macOS). Escribí:
+
+```text
+Añade un parámetro opcional `locale` que devuelva el saludo en español o inglés según el valor.
+```
+
+Revisá el diff inline y aceptá con `Enter` o descartá con `Esc`.
+
+#### 4️⃣ Chat View — modo Ask
+
+Abrí la Chat View (`Ctrl+Alt+I`), seleccioná **Ask** en el selector de modo y escribí:
+
+```text
+#codebase Explicame la estructura de este proyecto NestJS y qué hace cada archivo dentro de src/.
+```
+
+### 1.3 Copilot en la CLI
+
+Desde una terminal integrada, probá:
+
+```bash
+gh copilot suggest "levantar un contenedor de postgres 16 con volumen persistente y base copilot-nestjs"
+```
+
+```bash
+gh copilot explain "docker run --name pg -e POSTGRES_PASSWORD=xyz -p 5432:5432 -d postgres:16"
+```
+
+> [!TIP]
+> Copilot CLI te permite **ejecutar**, **copiar** o **revisar** el comando sugerido antes de correrlo.
+
+### 1.4 Copilot Code Review (introducción)
+
+En la Chat View, junto al botón de enviar, hay una acción **Review**. También podés:
+
+- Seleccionar código en el editor → clic derecho → *Copilot → Review and comment*.
+- Pedir revisión del diff actual con `#changes`.
+
+Lo usaremos a fondo en el [Paso 5 — Seguridad](#️-paso-5-detección-y-mitigación-de-vulnerabilidades).
+
+### ✅ Checkpoint del Paso 1
+
+- [ ] Aceptaste al menos una code completion.
+- [ ] Usaste Inline Chat para modificar un método.
+- [ ] Corriste un prompt en Chat View en modo Ask con `#codebase`.
+- [ ] Ejecutaste `gh copilot suggest` desde la terminal.
+
+---
+
+## 🧭 Paso 2. Mejorar las Interacciones con Contexto y Personalización
+
+**Objetivo:** obtener respuestas más precisas y consistentes usando variables de contexto, custom instructions, prompt files, chat modes y el selector de modelo.
+
+### 2.1 Variables de contexto (`#…`)
+
+Las variables `#` inyectan contexto tipado en tu prompt. Son mucho más precisas que describir el contexto con palabras.
+
+| Variable                  | Qué inyecta                                                                    |
+| ------------------------- | ------------------------------------------------------------------------------ |
+| `#codebase`               | Índice semántico de todo el workspace (sustituye a `@workspace`).              |
+| `#file`                   | Contenido de un archivo específico.                                            |
+| `#folder`                 | Todos los archivos de una carpeta.                                             |
+| `#selection`              | La selección actual del editor.                                                |
+| `#problems`               | Todos los diagnósticos (errores/warnings) del workspace.                       |
+| `#terminalLastCommand`    | Último comando ejecutado y su salida.                                          |
+| `#terminalSelection`      | Selección actual en el panel de terminal.                                      |
+| `#changes`                | Diff de los cambios Git actuales (staged + unstaged).                          |
+| `#usage`                  | Referencias/definiciones de un símbolo.                                        |
+| `#fetch`                  | Contenido de una URL pública.                                                  |
+| `#githubRepo`             | Información de un repositorio GitHub remoto.                                   |
+
+**Mini-ejercicio:** en modo Ask lanzá este prompt y compará la respuesta **con** y **sin** `#codebase`:
+
+```text
+Basado en #codebase, ¿qué versión de NestJS estamos usando y qué scripts npm hay disponibles?
+```
+
+### 2.2 Adjuntar archivos, carpetas e imágenes
+
+Con el icono **📎 Add Context** (o `Ctrl+/`) podés adjuntar archivos, carpetas, símbolos, imágenes (screenshot, mockup, diagrama) y la ventana activa.
+
+> [!TIP]
+> Adjuntar imágenes funciona con modelos con visión. Ideal para *"generame el HTML/CSS de este mockup"*.
+
+### 2.3 Selección de modelo
+
+Usá el **selector de modelo** al pie de la caja de chat:
+
+- **Claude Sonnet / Opus** — razonamiento largo, refactors complejos, explicaciones.
+- **GPT-5 / GPT-4.1** — buen balance para generación, edición y agente.
+- **o-series** (razonadores) — tareas con muchas dependencias lógicas.
+- **Modelos rápidos** — completions rápidas, edits pequeños.
+
+### 2.4 Custom Instructions
+
+Copilot lee automáticamente instrucciones desde archivos especiales del repo. **Evita repetir el mismo prompt** una y otra vez.
+
+#### 2.4.1 Instrucciones globales del repo
+
+Ya existe [`.github/copilot-instructions.md`](./.github/copilot-instructions.md). Ábrelo y revísalo — Copilot lo aplicará a **cada prompt** dentro del workspace.
+
+#### 2.4.2 Instrucciones específicas por patrón (`.instructions.md`)
+
+Podés crear reglas más granulares que sólo se activen para ciertos archivos. Creá `.github/instructions/typescript.instructions.md`:
+
+```markdown
+---
+applyTo: "**/*.ts"
+---
+
+- Usa siempre tipos explícitos en parámetros y valores de retorno de funciones exportadas.
+- Prefiere `readonly` en propiedades inmutables de clases.
+- Evita `enum`; usa `as const` con union types.
+- Todas las importaciones deben ser relativas al alias `src/` cuando exista.
+```
+
+Copilot cargará estas reglas **sólo cuando trabajes con archivos `.ts`**.
+
+> [!NOTE]
+> El frontmatter `applyTo` acepta patrones glob. Podés tener varios archivos `.instructions.md` para distintas capas (por ejemplo `**/*.spec.ts`, `src/products/**`, etc.).
+
+**Mini-ejercicio:** después de crear el archivo, en modo Ask pedile:
+
+```text
+#codebase Sugerí una refactorización para el AppService que respete nuestras convenciones.
+```
+
+Observá cómo la respuesta **respeta** las reglas del `.instructions.md`.
+
+### 2.5 Prompt Files (`.prompt.md`)
+
+Los prompt files son plantillas reutilizables. Se guardan en [`.github/prompts/`](./.github/prompts/) y aparecen como slash commands en el chat.
+
+Este repo ya trae tres prompt files listos para usar:
+
+| Prompt file                                                                        | Modo    | Uso                                                            |
+| ---------------------------------------------------------------------------------- | ------- | -------------------------------------------------------------- |
+| [`generar-crud-nestjs.prompt.md`](./.github/prompts/generar-crud-nestjs.prompt.md) | Agent   | Scaffold de un módulo NestJS completo con nombre parametrizado. |
+| [`revisar-seguridad.prompt.md`](./.github/prompts/revisar-seguridad.prompt.md)     | Ask     | Auditoría OWASP Top 10 sobre el código adjunto.                |
+| [`generar-tests.prompt.md`](./.github/prompts/generar-tests.prompt.md)             | Edit    | Genera specs con Jest + `@nestjs/testing`.                     |
+
+**Cómo invocarlos:** en el chat escribí `/generar-crud-nestjs` (o el nombre del prompt) y aparecerá en el picker con sus parámetros.
+
+### 2.6 Custom Chat Modes (`.chatmode.md`)
+
+Podés crear **modos de chat personalizados** con un system prompt y un set de herramientas restringido. Útil para *"modo revisor de seguridad"*, *"modo mentor"*, *"modo DBA"*, etc.
+
+Ejemplo de sintaxis (no lo crees ahora, sólo referencia) en `.github/chatmodes/security-reviewer.chatmode.md`:
+
+```markdown
+---
+description: Revisor de seguridad orientado a OWASP Top 10.
+tools: ['codebase', 'search', 'problems']
+model: Claude Sonnet
+---
+
+Sos un experto en seguridad. Revisá el código exclusivamente desde la óptica de OWASP Top 10.
+Por cada problema:
+1. Describí el riesgo.
+2. Mostrá un fragmento vulnerable.
+3. Propone una mitigación con código concreto.
+```
+
+### 2.7 MCP (Model Context Protocol) — mención rápida
+
+Los servidores **MCP** permiten conectar Copilot a **fuentes externas** (bases de datos, Jira, Confluence, tu propia API…) mediante `.vscode/mcp.json`. Está fuera del alcance de este workshop de 1 h, pero recordá que existe.
+
+### ✅ Checkpoint del Paso 2
+
+- [ ] Usaste al menos 3 variables `#…` diferentes en un prompt.
+- [ ] Cambiaste el modelo activo desde el selector.
+- [ ] Creaste `.github/instructions/typescript.instructions.md`.
+- [ ] Invocaste al menos un prompt file como slash command.
+
+---
+
+## 🛠️ Paso 3. Generación de Código y Refactoring
+
+**Objetivo:** construir un módulo NestJS completo con **Agent Mode**, extenderlo con **Edit Mode** y pulirlo con **Inline Chat**.
+
+### Panorama de decisiones
+
+```mermaid
+flowchart LR
+    A[¿Qué querés hacer?] --> B{Muchos archivos<br/>y comandos?}
+    B -- Sí --> C[Agent Mode]
+    B -- No --> D{Varios archivos<br/>ya existentes?}
+    D -- Sí --> E[Edit Mode]
+    D -- No --> F{Cambio pequeño<br/>y local?}
+    F -- Sí --> G[Inline Chat]
+    F -- No --> H[Ask Mode]
+```
+
+### 3.1 Crear el módulo `products` (Agent Mode)
+
+En la Chat View, seleccioná **Agent** en el selector de modo y enviá:
+
+```text
+#codebase Crea un módulo NestJS `products` con esta estructura:
+
+- `src/products/entities/product.entity.ts`: entity TypeORM con id (uuid v4), name, description, image, price, quantity, isAvailable, category.
+- `src/products/dto/create-product.dto.ts`: DTO con validaciones de class-validator.
+- `src/products/dto/update-product.dto.ts`: extiende de CreateProductDto usando `PartialType` de `@nestjs/mapped-types`.
+- `src/products/products.service.ts`: CRUD completo con Repository de TypeORM. `findOne` debe lanzar `NotFoundException`.
+- `src/products/products.controller.ts`: endpoints REST estándar.
+- `src/products/products.module.ts`: registra el TypeOrmModule.forFeature([Product]).
+
+Después:
+1. Actualizá `src/app.module.ts` para importar `ProductsModule` y configurar `TypeOrmModule.forRoot` leyendo desde `@nestjs/config` (host, port, username, password, database desde .env).
+2. Creá un `.env.example` con las variables.
+3. Instalá las dependencias necesarias (`@nestjs/typeorm`, `typeorm`, `pg`, `class-validator`, `class-transformer`, `@nestjs/config`, `@nestjs/mapped-types`, `uuid`).
+4. Corré `npm run build` para verificar que compila.
+
+Respetá las reglas de #codebase (no uses `any`, usa uuid v4, etc.).
+```
+
+Agent Mode te va a mostrar **cada acción** (ejecución de comandos, creación de archivos, edición de archivos existentes) y te pedirá aprobación para las que afecten el sistema. Aprobá las que quieras aplicar.
+
+> [!TIP]
+> Podés **detener** al agente con el botón *Stop* o **pausarlo** para inspeccionar un cambio antes de que continúe.
+
+Verificación:
+
+```bash
+npm run build
+```
+
+Si compila, el módulo está listo.
+
+### 3.2 Añadir un campo cross-file (Edit Mode)
+
+Vamos a añadir un campo `sku` propagándolo por varios archivos.
+
+1. En la Chat View, cambiá al modo **Edit**.
+2. Adjuntá con 📎 (o arrastrando desde el explorador):
+   - `src/products/entities/product.entity.ts`
+   - `src/products/dto/create-product.dto.ts`
+   - `src/products/products.service.ts`
+   - `src/products/products.controller.ts`
+3. Enviá:
+
+```text
+Añadí un campo `sku: string` obligatorio y único al Product:
+
+- En la entity, marcalo con `@Column({ unique: true })`.
+- En el CreateProductDto, validá con `@IsString()` y `@Length(3, 32)`.
+- En el service, en `create()`, si el sku ya existe, lanzá `ConflictException` de `@nestjs/common`.
+- Actualizá el controller si es necesario.
+
+No modifiques nada más.
+```
+
+Edit Mode te va a mostrar un **diff por archivo** que podés aceptar o rechazar individualmente.
+
+### 3.3 Refactor puntual (Inline Chat)
+
+Abrí `src/products/products.service.ts`, seleccioná el método `findOne` y presioná `Ctrl+I`:
+
+```text
+Refactorizá para que devuelva el producto con solo el `id`, `name` y `price`, usando `Pick<Product, ...>` como tipo de retorno.
+```
+
+Revisá el diff inline y aceptá con `Enter`.
+
+### 3.4 Traducir código externo (opcional)
+
+Podés pedirle a Copilot que traduzca código de otro lenguaje. Por ejemplo, adjuntando un snippet Python de Azure OpenAI:
+
+En modo Edit, adjuntá `src/products/products.service.ts` y pegá el siguiente snippet como contexto:
+
+```python
+import requests
+
+headers = {'api-key': 'YOUR_API_KEY', 'Content-Type': 'application/json'}
+params = {'api-version': '2024-02-15-preview'}
+json_data = {
+    'messages': [
+        {'role': 'system', 'content': 'You are an ai wizard that helps people create product descriptions.'},
+        {'role': 'user', 'content': 'nike'},
+    ],
+    'max_tokens': 800,
+    'temperature': 0.7,
 }
+response = requests.post(
+    'https://YOUR-RESOURCE.openai.azure.com/openai/deployments/YOUR-DEPLOYMENT/chat/completions',
+    params=params, headers=headers, json=json_data,
+)
 ```
 
-**Create the Product DTOs**:
+Y este prompt:
 
-Create a file `create-product.dto.ts` in the src/products/dto directory.
-
-```typescript
-import { IsString } from 'class-validator';
-
-export class CreateProductDto {
-  @IsString()
-  name: string;
-
-  @IsString()
-  description: string;
-
-  @IsString()
-  image: string;
-}
+```text
+Traducí esta llamada Python a un servicio NestJS `OpenAIService` en `src/products/openai.service.ts` usando `@nestjs/axios`.
+Añadí el `OpenAIService` como dependencia del `ProductsService` e inyectalo en `findOne` para enriquecer la descripción del producto.
+No hardcodees la API key: usá `ConfigService` para leerla desde `OPENAI_API_KEY`.
 ```
 
-Create a file `update-product.dto.ts` in the src/products/dto directory.
+> [!IMPORTANT]
+> Copilot **no debería** hardcodear la key. Si lo hace, es una oportunidad perfecta para el [Paso 5 — Seguridad](#️-paso-5-detección-y-mitigación-de-vulnerabilidades).
 
-```typescript
-import { CreateProductDto } from './create-product.dto';
+### ✅ Checkpoint del Paso 3
 
-export class UpdateProductDto extends CreateProductDto {}
+- [ ] Módulo `products` funcional (compila con `npm run build`).
+- [ ] Campo `sku` propagado a entity, DTO y service.
+- [ ] Refactor aplicado con Inline Chat.
+
+---
+
+## 🧪 Paso 4. Creación de Pruebas Unitarias con Jest
+
+**Objetivo:** generar pruebas unitarias con Jest y `@nestjs/testing`, y usar Agent Mode para arreglar tests que fallen.
+
+> [!NOTE]
+> Requisito: haber completado el [Paso 3](#️-paso-3-generación-de-código-y-refactoring) — necesitamos el `ProductsService`.
+
+### 4.1 Generar tests con `/tests`
+
+1. Abrí `src/products/products.service.ts` y **seleccioná el método `findAll`**.
+2. En Chat View (modo Ask o Edit) escribí:
+
+```text
+/tests Generá pruebas unitarias con Jest y @nestjs/testing para el método seleccionado. Mockeá el Repository de TypeORM con `getRepositoryToken`.
 ```
 
-#### ⚠️ Troubleshooting
-
-If you encounter this error: `Cannot find module '@nestjs/mapped-types' or its corresponding type declarations.` in the `update-product.dto.ts` file, you can fix it by asking Copilot to provide a solution using the `fix using copilot` command or removing the import statement.
-
-**Solution**:
-
-**Install the @nestjs/swagger** or **remove the import statement** from the `update-product.dto.ts` file.
-
-```typescript
-import { CreateProductDto } from './create-product.dto';
-export class UpdateProductDto extends CreateProductDto {}
-```
-
-**Create a `product.service.ts` file** in the src/products directory.
-
-```typescript
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Product } from './entities/product.entity';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-
-@Injectable()
-export class ProductService {
-  constructor(
-    @InjectRepository(Product)
-    private productRepository: Repository<Product>,
-  ) {}
-
-  create(createProductDto: CreateProductDto): Promise<Product> {
-    const product = this.productRepository.create(createProductDto);
-    return this.productRepository.save(product);
-  }
-
-  findAll(): Promise<Product[]> {
-    return this.productRepository.find();
-  }
-
-  findOne(id: string): Promise<Product> {
-    return this.productRepository.findOneBy({ id });
-  }
-
-  async update(
-    id: string,
-    updateProductDto: UpdateProductDto,
-  ): Promise<Product> {
-    await this.productRepository.update(id, updateProductDto);
-    return this.productRepository.findOneBy({ id });
-  }
-
-  async remove(id: string): Promise<void> {
-    await this.productRepository.delete(id);
-  }
-}
-```
-
-#### ⚠️ Troubleshooting
-
-If you encounter this error: `Type 'Product | null' is not assignable to type 'Product'.
-  Type 'null' is not assignable to type 'Product'.` in the `product.service.ts` file, you can fix it by asking Copilot to provide a solution using the `fix using copilot` command.
-
-**Solution**:
-
-```typescript
-  async findOne(id: string): Promise<Product> {
-    const product = await this.productRepository.findOneBy({ id });
-    if (!product) {
-      throw new NotFoundException(`Product with ID ${id} not found`);
-    }
-    return product;
-  }
-```
-
-make sure to import NotFoundException from `@nestjs/common`.
-
-**Create the `product.controller.ts` file** in the src/products directory.
-
-```typescript
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Delete,
-  Put,
-} from '@nestjs/common';
-import { ProductService } from './product.service';
-import { CreateProductDto } from './create-product.dto';
-import { UpdateProductDto } from './update-product.dto';
-import { Product } from './product.entity';
-
-@Controller('products')
-export class ProductController {
-  constructor(private readonly productService: ProductService) {}
-
-  @Post()
-  create(@Body() createProductDto: CreateProductDto): Promise<Product> {
-    return this.productService.create(createProductDto);
-  }
-
-  @Get()
-  findAll(): Promise<Product[]> {
-    return this.productService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<Product> {
-    return this.productService.findOne(id);
-  }
-
-  @Put(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateProductDto: UpdateProductDto,
-  ): Promise<Product> {
-    return this.productService.update(id, updateProductDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
-    return this.productService.remove(id);
-  }
-}
-```
-
-**Create the Product module**: Create a file `product.module.ts` in the src/products directory.
-
-```typescript
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductService } from './product.service';
-import { ProductController } from './product.controller';
-import { Product } from './product.entity';
-
-@Module({
-  imports: [TypeOrmModule.forFeature([Product])],
-  providers: [ProductService],
-  controllers: [ProductController],
-})
-export class ProductModule {}
-```
-
-**Update the App module**: Update the `app.module.ts` file in the src directory.
-
-```typescript
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductModule } from './products/product.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-
-@Module({
-  imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'your_username',
-      password: 'your_password',
-      database: 'your_database',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
-    }),
-    ProductModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
-})
-export class AppModule {}
-```
-
-### 2. Create a PostgreSQL container using Copilot in the CLI
-
-👤 Prompt:
-
-```bash
-gh copilot suggest "how to run a postgres using docker in my local"
-```
-
-🤖 Response:
-
-```bash
-docker run --name postgres-local -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
-```
-
-#### Check Database Connection
-
-- Use DBeaver or any database client to connect to the server and create a new database called `copilot-nestjs`.
-
-![Create Connection](./assets/create-connection.png)
-
-![Select PostgreSQL](./assets/select-pg.png)
-
-![Fill Out Form](/assets/fill-out-connection.png)
-
-After filling out the form, click on the `Test Connection` button to check if the connection is successful. Then click on the `Finish` button to create the connection.
-
-![Create DB](./assets/create-db.png)
-
-![Creating DB](./assets/creating-db.png)
-
-**Update the `app.module.ts` file** in the src directory.
-
-```typescript
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductModule } from './products/product.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-
-@Module({
-  imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'mysecretpassword',
-      database: 'copilot-nestjs',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
-    }),
-    ProductModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
-})
-export class AppModule {}
-```
-
-### Check if application run successfully
-
-```bash
-npm run start:dev
-```
-
-If everything is working fine, you should see the following output:
-
-![alt text](./assets/connection-ok.png)
-
-### 3. Setting Nest Config using .env file
-
-In this step, we will ask GitHub Copilot to provide the necessary code to set up the NestJS configuration to avoid hardcoding the database connection details in the `app.module.ts` file.
-
-👤Prompt:
-
-```plaintext
-@workspace could you suggest good practices in order to use other approach to don't harcode the env-vars in #file:app.module.ts using @nestjs/config?
-```
-
-🤖Response:
-
-GitHub Copilot should provide the following:
-
-**Install necessary dependencies**:
-
-```bash
-npm install @nestjs/config
-```
-
-**Create a .env file**: Create a `.env` file in the root directory of the project
-
-```
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-DATABASE_USERNAME=postgres
-DATABASE_PASSWORD=mysecretpassword
-DATABASE_NAME=copilot-nestjs
-```
-
-ℹ️ Make sure to replace the values with your database connection details.
-
-**Update the `app.module.ts` file** in the src directory.
-
-```typescript
-import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductModule } from './products/product.module';
-
-@Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DATABASE_HOST'),
-        port: configService.get<number>('DATABASE_PORT'),
-        username: configService.get<string>('DATABASE_USERNAME'),
-        password: configService.get<string>('DATABASE_PASSWORD'),
-        database: configService.get<string>('DATABASE_NAME'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true,
-      }),
-      inject: [ConfigService],
-    }),
-    ProductModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
-})
-export class AppModule {}
-```
-
-**Update the `main.ts` file** in the src directory.
-
-```typescript
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
-
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const configService = app.get(ConfigService);
-  const port = configService.get<number>('PORT') || 3000;
-  await app.listen(port);
-}
-
-bootstrap();
-```
-
-Run the application again to check if the configuration is working correctly.
-
-### 4. Copilot Edits ⭐
-
-ℹ️ Copilot Edits allows for fast, AI-powered code changes across files using natural language. Edits are applied directly in the editor for in-place review.
-
-In this step, we will ask GitHub Copilot to provide the necessary code to add new fields to the product entity using Copilot Edits.
-
-To use Copilot Edits, click in the Copilot Edits option in the top left corner of the GitHub Copilot Chat
-
-![alt text](./assets/open-copilot-edits.png)
-
-### ⚠️ **Important**
-
-There's a change in how you access Copilot edits. To edit using Copilot, please click on the ‘Ask’ dropdown situated at the bottom right of the Copilot Chat window and then choose ‘Edit’ from the options provided in the dropdown.
-
-![alt text](./assets/open-copilot-edits2.png)
-
-Once you have opened Copilot Edits, add the following files to the Copilot Edits:
-`create-product.dto.ts`, `product.entity.ts`, `product.service.ts`, `product.controller.ts`
-
-![alt text](./assets/add-files-to-copilot-edit.png)
-
-Then, send the following prompt:
-
-👤Prompt:
-
-```plaintext
-Add new fields to the product entity: price: number, quantity: number, isAvailable: boolean and category: string.
-```
-
-After sending the prompt, GitHub Copilot will provide the necessary code changes to add the new fields to the necessary files.
-
-ℹ️ If GitHub Copilot did not provide the Update and Delete methods in the `product.service.ts` file, you can use Copilot Edits, just add `product.service.ts` and `product.controller.ts` to the Copilot Edits and send the following prompt:
-
-👤Prompt:
-
-```plaintext
-Add the Update and Delete methods.
-```
-
-### 5. Create a Seeder File to Populate the Database
-
-In this step, we will ask **GitHub Copilot Chat** to provide the necessary code to create a seeder file that will populate the database with sample data using @faker-js/faker.
-
-👤Prompt:
-
-```plaintext
-@workspace How to create a product seeder service to populate the database with sample product data using @faker-js/faker and onModuleInit? Use the product service file #file:product.service.ts in the new product seeder service
-```
-
-🤖Response:
-
-GitHub Copilot should provide the following:
-
-**Install necessary dependencies**:
-
-```bash
-npm install @faker-js/faker
-```
-
-**Create the Product Seeder Service**: Create a file `product-seeder.service.ts` in the src/products directory.
-
-```typescript
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { ProductService } from './product.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { faker } from '@faker-js/faker';
-
-@Injectable()
-export class ProductSeederService implements OnModuleInit {
-  constructor(private readonly productService: ProductService) {}
-
-  async onModuleInit() {
-    await this.seedProducts();
-  }
-
-  async seedProducts() {
-    const products: CreateProductDto[] = [];
-
-    for (let i = 0; i < 10; i++) {
-      products.push({
-        name: faker.commerce.productName(),
-        description: faker.commerce.productDescription(),
-        image: faker.image.urlLoremFlickr(),
-        price: parseFloat(faker.commerce.price()),
-        quantity: faker.number.int({ min: 1, max: 100 }),
-        isAvailable: faker.datatype.boolean(),
-        category: faker.commerce.department(),
-      });
-    }
-
-    for (const product of products) {
-      await this.productService.create(product);
-    }
-  }
-}
-```
-
-**Add condition to the `product-seeder.service.ts` file** to avoid seeding the database if there are already products in the database.
-
-Use GitHub Copilot Inline Chat (ctrl + i) to ask Copilot to provide a solution to this problem.
-
-Open the `product-seeder.service.ts` and select the `seedProducts` function and press `ctrl + i` to ask Copilot for a solution.
-
-👤 Prompt:
-
-```
-Add a condition to only seed the products if the table is empty
-```
-
-```typescript
-  async seedProducts() {
-    const existingProducts = await this.productService.findAll();
-    if (existingProducts.length > 0) {
-      return;
-    }
-
-    const products: CreateProductDto[] = [];
-
-    for (let i = 0; i < 10; i++) {
-      products.push({
-        name: faker.commerce.productName(),
-        description: faker.commerce.productDescription(),
-        image: faker.image.urlLoremFlickr(),
-        price: parseFloat(faker.commerce.price()),
-				quantity: faker.number.int({ min: 1, max: 100 }),
-				isAvailable: faker.datatype.boolean(),
-				category: faker.commerce.department(),
-      });
-    }
-
-    for (const product of products) {
-      await this.productService.create(product);
-    }
-  }
-```
-
-#### ⚠️ Troubleshooting
-
-If you encounter this error: `Property 'imageUrl' does not exist on type 'ImageModule'.` you can fix it by asking Copilot to provide a solution using the `fix using copilot` command or by reviewing the faker-js documentation. https://fakerjs.dev/api/image.html
-
-Solution:
-
-```typescript
-  image: faker.image.urlLoremFlickr(),
-```
-
-**Update the Product Module**: Update the `product.module.ts` file in the src/products directory.
-
-```typescript
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductService } from './product.service';
-import { ProductController } from './product.controller';
-import { Product } from './entities/product.entity';
-import { ProductSeederService } from './product-seeder.service';
-
-@Module({
-  imports: [TypeOrmModule.forFeature([Product])],
-  providers: [ProductService, ProductSeederService],
-  controllers: [ProductController],
-})
-export class ProductModule {}
-```
-
-This will create a product seeder service that populates the database with sample product data using @faker-js/faker when the module is initialized. You can now run the application and check if the products are seeded successfully.
-
-### 6. Generate Unit Tests for Services
-
-In this step, we will ask **GitHub Copilot Chat** to provide the necessary code to generate unit tests for the product service
-
-Open the `product.service.ts` file in the src/products directory and select the `findAll` function and send the following prompt to Copilot Chat.
-
-👤Prompt:
-
-```plaintext
-@workspace /tests Generate unit tests for #selection
-```
-
-GitHub Copilot will provide the necessary code to generate the unit tests for the `findAll` function in the product service.
-
-Now you can generate the unit tests for findOne function in the product service by following the same steps.
-
-🤖 Response:
+Copilot te propondrá el contenido de `src/products/products.service.spec.ts`:
 
 ```typescript
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ProductService } from './product.service';
+import { ProductsService } from './products.service';
 import { Product } from './entities/product.entity';
-import { NotFoundException } from '@nestjs/common';
 
-describe('ProductService', () => {
-  let service: ProductService;
+describe('ProductsService', () => {
+  let service: ProductsService;
   let repository: Repository<Product>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        ProductService,
+        ProductsService,
         {
           provide: getRepositoryToken(Product),
           useClass: Repository,
@@ -671,368 +544,285 @@ describe('ProductService', () => {
       ],
     }).compile();
 
-    service = module.get<ProductService>(ProductService);
+    service = module.get<ProductsService>(ProductsService);
     repository = module.get<Repository<Product>>(getRepositoryToken(Product));
+
+    jest.clearAllMocks();
   });
 
   describe('findAll', () => {
-    it('should return an array of products', async () => {
-      const products: Product[] = [
-        {
-          id: '1',
-          name: 'Product 1',
-          description: 'Description 1',
-          image: 'Image 1',
-        },
-        {
-          id: '2',
-          name: 'Product 2',
-          description: 'Description 2',
-          image: 'Image 2',
-        },
-      ];
-
+    it('devuelve un array de productos', async () => {
+      const products: Product[] = [/* ... */];
       jest.spyOn(repository, 'find').mockResolvedValue(products);
-
       expect(await service.findAll()).toBe(products);
     });
   });
-
-  describe('findOne', () => {
-    it('should return a product if found', async () => {
-      const product: Product = {
-        id: '1',
-        name: 'Product 1',
-        description: 'Description 1',
-        image: 'Image 1',
-      };
-
-      jest.spyOn(repository, 'findOneBy').mockResolvedValue(product);
-
-      expect(await service.findOne('1')).toBe(product);
-    });
-
-    it('should throw a NotFoundException if product not found', async () => {
-      jest.spyOn(repository, 'findOneBy').mockResolvedValue(null);
-
-      await expect(service.findOne('1')).rejects.toThrow(
-        new NotFoundException(`Product with ID 1 not found`),
-      );
-    });
-  });
 });
 ```
 
-Save the file in the `src/products` directory as `product.service.spec.ts`.
-
-**Homework**: Generate unit tests for the remaining functions in the product service by following the same steps.
-
-#### ⚠️ Troubleshooting
-
-If the unit test fail for the `findOne` method. This can be fixed by selecting the error message on the VSCode terminal, and using the `/fix` command with the following shortcuts: 
-```plaintext
-@workspace /fix #terminalLastCommand #terminalSelection
-```
-
-Solution: Add this line of code at the end of the `beforeEach` function
-```js
-
-beforeEach(async () => {
-	/* Rest of the code...*/
-	jest.clearAllMocks(); // Clear any previous calls to mocks
-});
-```
-
-### 7. Add Swagger Documentation
-
-In this step, we will ask GitHub Copilot to provide the necessary code to add Swagger documentation to the NestJS application.
-
-👤Prompt:
-
-```plaintext
-@workspace Could you suggest how to add swagger documentation to the project?
-```
-
-🤖Response:
-
-GitHub Copilot should provide the following:
-
-**Install necessary dependencies**:
+### 4.2 Ejecutar los tests
 
 ```bash
-npm install @nestjs/swagger swagger-ui-express
+npm test
 ```
 
-Create a Swagger configuration file, for example, swagger.config.ts in the src directory.
+Si algún test falla, **no arregles a mano**: pasá al siguiente paso.
 
-```typescript
-// filepath: src/swagger.config.ts
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { INestApplication } from '@nestjs/common';
+### 4.3 Arreglar tests con Agent Mode
 
-export function setupSwagger(app: INestApplication): void {
-  const config = new DocumentBuilder()
-    .setTitle('NestJS API')
-    .setDescription('The NestJS API description')
-    .setVersion('1.0')
-    .build();
+Cuando un test falle, la salida del terminal queda disponible en `#terminalLastCommand`. En modo **Agent**:
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-}
+```text
+Los tests de `products.service.spec.ts` están fallando. Usá #terminalLastCommand para diagnosticar y #problems para ver errores del compilador. Corregí los tests (no la lógica del servicio, salvo bug evidente) y volvé a ejecutar `npm test` hasta que pasen todos.
 ```
 
-**Update the `main.ts` file** in the src directory to include the Swagger configuration.
+Agent Mode:
 
-```typescript
-// filepath: src/main.ts
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
-import { setupSwagger } from './swagger.config';
+1. Lee el fallo.
+2. Edita el spec.
+3. Vuelve a ejecutar `npm test`.
+4. Itera hasta pasar (o hasta que te pida ayuda).
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const configService = app.get(ConfigService);
-  const port = configService.get<number>('PORT') || 3000;
+> [!TIP]
+> Si el agente entra en bucle, detenelo con **Stop** y pedile un análisis más específico usando `#file:products.service.spec.ts`.
 
-  setupSwagger(app);
+### 4.4 Completar la cobertura
 
-  await app.listen(port);
-}
+En modo Edit, con `src/products/products.service.ts` y `src/products/products.service.spec.ts` adjuntos:
 
-bootstrap().catch((err) => {
-  console.error('Error during bootstrap:', err);
-});
+```text
+Completá el spec para cubrir todos los métodos del ProductsService (findOne, create, update, remove).
+
+Incluí:
+- Caso feliz de cada método.
+- `findOne` cuando NO existe el producto (debe lanzar `NotFoundException`).
+- `create` cuando el sku ya existe (debe lanzar `ConflictException`).
+- `update` cuando el id no existe.
+- `remove` cuando el id no existe.
+
+Seguí el estilo del spec actual y respetá las reglas de #codebase.
 ```
 
-Add Swagger decorators to your DTOs and controllers to generate the documentation
-
-example:
-
-```typescript
-// filepath: src/products/product.controller.ts
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-
-  @Post()
-  @ApiOperation({ summary: 'Create a new product' })
-  @ApiResponse({ status: 201, description: 'The product has been successfully created.', type: Product })
-  create(@Body() createProductDto: CreateProductDto): Promise<Product> {
-    return this.productService.create(createProductDto);
-  }
-
-```
-
-Then run the application and navigate to `http://localhost:3000/api` to view the Swagger documentation.
-
-![alt text](./assets/swagger.png)
-
-### 8. Create a Better Description of the Products using Azure Open AI (Optional)
-
-ℹ️ Make sure to have an Azure Open AI API key to use this feature.
-
-We are going to use the translate and refactor characteristics of GitHub Copilot to translate a call made in python to NodeJS.
-
-👤Prompt:
-
-```plaintext
-@workspace translate this implementation #file:openai-call.md  to node (nestjs) using @nestjs/axios. Create a service to generate a product description. This mus be implemented in the find one method of the #file:product.service.ts
-```
-
-🤖Response:
-
-GitHub Copilot should provide the following:
-
-**Install necessary dependencies**:
+Verificá:
 
 ```bash
-npm install @nestjs/axios axios
+npm run test:cov
 ```
 
-Create a file `openai.service.ts` in the src/products directory.
+Con este flujo deberías llegar a **cobertura cercana al 100%** en el service.
 
-```typescript
-// filepath: src/products/openai.service.ts
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
+### 4.5 Bonus — Tests para el Controller
 
-@Injectable()
-export class OpenAIService {
-  constructor(private readonly httpService: HttpService) {}
+Con el mismo enfoque, adjuntá `src/products/products.controller.ts` y pedí:
 
-  async generateProductDescription(productName: string): Promise<string> {
-    const headers = {
-      'Content-Type': 'application/json',
-      'api-key': process.env.OPENAI_API_KEY,
-    };
-
-    const params = {
-      'api-version': '2024-02-15-preview',
-    };
-
-    const json_data = {
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You are an AI wizard that helps people create product descriptions.',
-        },
-        {
-          role: 'user',
-          content: productName,
-        },
-      ],
-      max_tokens: 800,
-      temperature: 0.7,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      top_p: 0.95,
-      stop: null,
-    };
-
-    try {
-      const response = await firstValueFrom(
-        this.httpService.post(
-          'https://clever-dev-openai.openai.azure.com/openai/deployments/chat/chat/completions',
-          json_data,
-          { headers, params },
-        ),
-      );
-      return response.data.choices[0].message.content;
-    } catch (error) {
-      throw new InternalServerErrorException(
-        'Failed to generate product description',
-      );
-    }
-  }
-}
+```text
+Generá `src/products/products.controller.spec.ts` mockeando el `ProductsService` con `jest.fn()`.
+Cubrí todos los endpoints y verificá que se propaguen las excepciones del service.
 ```
 
-Update the `findOne` method in the `product.service.ts` file to use the OpenAIService.
+### ✅ Checkpoint del Paso 4
 
-```typescript
-  async findOne(id: string): Promise<Product> {
-    const product = await this.productRepository.findOneBy({ id });
-    if (!product) {
-      throw new NotFoundException(`Product with ID ${id} not found`);
-    }
+- [ ] `products.service.spec.ts` con todos los métodos cubiertos y pasando.
+- [ ] (Bonus) `products.controller.spec.ts` pasando.
+- [ ] Experimentaste arreglar un test fallido con Agent Mode + `#terminalLastCommand`.
 
-    const description = await this.openAIService.generateProductDescription(product.name);
-    product.description = description;
+---
 
-    return product;
-  }
+## 🛡️ Paso 5. Detección y Mitigación de Vulnerabilidades
+
+**Objetivo:** usar Copilot para identificar problemas comunes de **OWASP Top 10** y aplicar mitigaciones concretas.
+
+### 5.1 Panorama del ejercicio
+
+Vamos a trabajar con un archivo **intencionalmente vulnerable**: [`assets/vulnerable-code-example.md`](./assets/vulnerable-code-example.md). Contiene un controller con al menos 7 categorías OWASP: credenciales hardcodeadas, SQL injection, `eval()` sobre input, autenticación insegura, logging de datos sensibles, CORS abierto, deserialización insegura y broken access control.
+
+```mermaid
+flowchart LR
+    A[1. Copiar código<br/>vulnerable al proyecto] --> B[2. Copilot Code<br/>Review]
+    B --> C[3. Crear<br/>.instructions.md<br/>de seguridad]
+    C --> D[4. Refactor con<br/>Agent Mode]
+    D --> E[5. Auditar<br/>dependencias<br/>con npm audit]
 ```
 
-**Update the `product.module.ts` file** in the src/products directory to include the OpenAIService.
+### 5.2 Copiar el snippet al proyecto
 
-```typescript
-@Module({
-  imports: [TypeOrmModule.forFeature([Product]), HttpModule],
-  providers: [ProductService, ProductSeederService, OpenAIService],
-  controllers: [ProductController],
-})
-export class ProductModule {}
+Abrí [`assets/vulnerable-code-example.md`](./assets/vulnerable-code-example.md), copiá el bloque TypeScript y pegalo en `src/vulnerable.controller.ts`. (Podés pedirle al agente que lo cree por vos.)
+
+### 5.3 Ejercicio A — Copilot Code Review
+
+Con el archivo abierto en el editor:
+
+1. Seleccioná todo (`Ctrl+A`).
+2. Clic derecho → **Copilot → Review and comment**.
+
+Copilot generará **comentarios inline** con severidad y sugerencia de fix. Revísalos.
+
+**Alternativa desde el chat (modo Ask):**
+
+```text
+#file:src/vulnerable.controller.ts Revisá este archivo desde la óptica de OWASP Top 10 (2021). Por cada hallazgo devolvé:
+
+1. Categoría OWASP.
+2. Severidad (Critical / High / Medium / Low).
+3. Extracto del código vulnerable.
+4. Impacto potencial.
+5. Mitigación con código concreto para NestJS.
+
+Devolvé el resultado como tabla Markdown.
 ```
 
-⚠️ Make sure to import the HttpModule from `@nestjs/axios` in the `product.module.ts` file.
+> [!TIP]
+> También podés invocar el prompt file [`revisar-seguridad.prompt.md`](./.github/prompts/revisar-seguridad.prompt.md) con `/revisar-seguridad` y adjuntar el archivo.
 
-#### ⚠️ Troubleshooting
+### 5.4 Ejercicio B — Custom instructions para seguridad
 
-If you encounter this error: `Unsafe return of a value of type `any`in the`openai.service.ts` file
+Creá `.github/instructions/security.instructions.md`:
 
-Select the code and send the following prompt to Copilot Chat to fix the issue:
+```markdown
+---
+applyTo: "src/**/*.ts"
+---
 
-👤 Prompt:
+Requisitos de seguridad no negociables para este proyecto:
 
-```plaintext
-I'm getting Unsafe return of a value of type any #selection
+- Nunca hardcodear secretos, tokens, API keys ni contraseñas. Usar `@nestjs/config` y `.env`.
+- Todos los inputs de endpoints DEBEN validarse con `class-validator` y aplicar `ValidationPipe` global.
+- Nunca concatenar strings para construir queries SQL. Usar QueryBuilder de TypeORM o parámetros ligados.
+- Nunca usar `eval`, `Function()` o `child_process.exec` con input del usuario.
+- Contraseñas: hashear con `argon2` o `bcrypt` (cost ≥ 12) y comparar con la función `verify`/`compare` de la librería (constant time).
+- Logs: nunca loguear tokens, contraseñas, PII ni cuerpos de request completos.
+- CORS: nunca `origin: '*'` en producción. Leer allowlist desde config.
+- Cabeceras: usar `helmet` en `main.ts`.
+- Rate limiting: usar `@nestjs/throttler` en endpoints públicos.
 ```
 
-🤖 Response:
+Copilot aplicará estas reglas a partir de ahora **en cualquier prompt que involucre archivos bajo `src/`**.
 
-```typescript
-// filepath: src/products/openai.service.ts
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
+### 5.5 Ejercicio C — Aplicar las mitigaciones con Agent Mode
 
-interface OpenAIResponse {
-  choices: {
-    message: {
-      content: string;
-    };
-  }[];
-}
+En modo **Agent**:
 
-@Injectable()
-export class OpenAIService {
-  constructor(private readonly httpService: HttpService) {}
+```text
+Refactorizá `src/vulnerable.controller.ts` siguiendo estrictamente las reglas de #file:.github/instructions/security.instructions.md y OWASP Top 10.
 
-  async generateProductDescription(productName: string): Promise<string> {
-    const headers = {
-      'Content-Type': 'application/json',
-      'api-key': process.env.OPENAI_API_KEY,
-    };
+Para cada cambio explicá brevemente qué vulnerabilidad mitiga.
 
-    const params = {
-      'api-version': '2024-02-15-preview',
-    };
-
-    const json_data = {
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You are an AI wizard that helps people create product descriptions.',
-        },
-        {
-          role: 'user',
-          content: productName,
-        },
-      ],
-      max_tokens: 800,
-      temperature: 0.7,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      top_p: 0.95,
-      stop: null,
-    };
-
-    try {
-      const response = await firstValueFrom(
-        this.httpService.post<OpenAIResponse>(
-          'https://clever-dev-openai.openai.azure.com/openai/deployments/chat/chat/completions',
-          json_data,
-          { headers, params },
-        ),
-      );
-      return response.data.choices[0].message.content;
-    } catch (error) {
-      throw new InternalServerErrorException(
-        'Failed to generate product description',
-      );
-    }
-  }
-}
+Al terminar:
+1. Instalá las dependencias necesarias (`helmet`, `@nestjs/throttler`, `argon2` u otras si aplica).
+2. Actualizá `main.ts` para aplicar `helmet` y `ValidationPipe` global.
+3. Corré `npm run build` para verificar.
 ```
 
-### 9. Create README.md file with Developer Docs of the project
+Aprobá los cambios uno a uno, revisando qué hace cada acción.
 
-In this step, we will ask GitHub Copilot to provide the necessary code to create a README.md file with developer documentation for the project.
+### 5.6 Ejercicio D — Detectar dependencias vulnerables
 
-👤Prompt:
+En la terminal:
 
-```plaintext
-@workspace Could you suggest how to create a README.md file with developer documentation for the project?
+```bash
+npm audit
 ```
 
-### 10. Export GitHub Copilot Chat to Developer Docs
+Si hay hallazgos, en modo **Agent**:
 
-In this step, we will ask GitHub Copilot to provide the necessary code to export the chat to the developer documentation. This is useful for capturing the conversation and context around the development process.
+```text
+Analizá la salida de #terminalLastCommand. Por cada dependencia vulnerable de severidad High/Critical, proponé una acción (upgrade, replace, patch). Aplicá los cambios de menor riesgo en `package.json` y corré `npm install` + `npm run build` para validar.
+```
 
-1. Press ctrl + shift + p to open the command palette.
-2. Type "Export Chat"
-3. Select the option to export the chat.
-4. Save the exported chat.
+### 5.7 Copilot Autofix (GitHub Advanced Security)
+
+Cuando este proyecto se sube a GitHub y está habilitado **GitHub Advanced Security**, cada alerta de **CodeQL** o **Secret Scanning** puede tener un **Copilot Autofix** que sugiere el PR de corrección automáticamente. Es la contraparte server-side de lo que acabás de hacer localmente.
+
+### 5.8 Buenas prácticas al usar Copilot para seguridad
+
+> [!IMPORTANT]
+> **Nunca confíes al 100 %** en el output. Copilot puede introducir código vulnerable si el prompt lo pide implícitamente. Siempre revisá.
+
+1. **Reforzá con `.instructions.md`** las reglas duras (secretos, SQLi, XSS, deserialización).
+2. **Usá Copilot Code Review** en cada PR como línea base, no como sustituto de SAST/DAST.
+3. **Preferí mitigaciones estándar** (helmet, class-validator, throttler, argon2) por encima de soluciones ad-hoc.
+4. **Prompt injection en tool outputs:** cuando Copilot lea `#fetch` o herramientas MCP externas, ese contenido puede intentar manipular al modelo. Tratá siempre el output de herramientas como *untrusted input*.
+
+### ✅ Checkpoint del Paso 5
+
+- [ ] Ejecutaste Copilot Code Review sobre el archivo vulnerable.
+- [ ] Creaste `.github/instructions/security.instructions.md`.
+- [ ] Refactorizaste el archivo vulnerable con Agent Mode.
+- [ ] Corriste `npm audit` e interpretaste el resultado con Copilot.
+
+---
+
+## 🧹 Limpieza
+
+Detener el contenedor de Postgres (si lo levantaste):
+
+```bash
+docker stop postgres-workshop; docker rm postgres-workshop
+```
+
+Volver al estado inicial de la rama:
+
+```bash
+git restore .
+git clean -fd
+```
+
+> [!WARNING]
+> `git clean -fd` elimina archivos y carpetas **no rastreados**. Si querés conservar los archivos que generaste durante el workshop, saltate ese comando.
+
+---
+
+## 📁 Estructura del repositorio
+
+```text
+copilot-nestjs/
+├── README.md                                  # 🇪🇸 Este workshop (guía principal)
+├── README_EN.md                               # 🇺🇸 English version
+├── package.json                               # Dependencias NestJS + Jest
+├── tsconfig.json / tsconfig.build.json
+├── nest-cli.json
+├── eslint.config.mjs / .prettierrc
+├── src/                                       # Código NestJS base
+│   ├── app.controller.ts / .spec.ts
+│   ├── app.module.ts
+│   ├── app.service.ts
+│   └── main.ts
+├── test/                                      # Tests e2e
+│   ├── app.e2e-spec.ts
+│   └── jest-e2e.json
+├── assets/                                    # Recursos del workshop
+│   └── vulnerable-code-example.md             # Snippet OWASP para el Paso 5
+└── .github/
+    ├── copilot-instructions.md                # Instrucciones globales del repo
+    └── prompts/                               # Prompt files reutilizables
+        ├── generar-crud-nestjs.prompt.md
+        ├── generar-tests.prompt.md
+        └── revisar-seguridad.prompt.md
+```
+
+---
+
+## 🧠 Puntos didácticos clave
+
+1. **Elegí el modo correcto:** Ask para preguntar, Edit para varios archivos con vista previa, Agent para tareas multi-paso que requieren ejecutar comandos y verificar.
+2. **El contexto vale más que el prompt largo:** `#codebase`, `#file`, `#problems`, `#terminalLastCommand` reemplazan párrafos enteros de descripción.
+3. **Custom instructions escalan:** en vez de repetir "no uses `any`" en cada prompt, escribilo una vez en `.github/copilot-instructions.md`.
+4. **Prompt files reutilizables:** convertí tus mejores prompts en `.prompt.md` para que el equipo entero los use como slash commands.
+5. **Copilot no reemplaza tu criterio de seguridad:** vos definís la política, Copilot escribe el código de esa política. Siempre revisá — sobre todo lo relacionado con auth, crypto y validación de input.
+6. **El ciclo mata:** con Agent Mode el mejor patrón es *"cambio → correr build/tests → si falla, arreglar"*. Copilot itera solo si le das el contexto de la salida.
+
+---
+
+<div align="center">
+
+  **🎉 ¡Llegaste al final del workshop!**
+
+  Si querés seguir practicando, pedile a Copilot que agregue un módulo `orders` que dependa de `products`, o que integre autenticación JWT respetando las reglas de seguridad que ya definimos.
+
+</div>
+
+---
+
+## 📜 Licencia
+
+Distribuido bajo licencia MIT. Consultá [LICENSE](./LICENSE) si está presente en el repo.
