@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Header ENG</title>
+<style>
+  :root {
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 1600px;
+    height: 400px;
+    font-family: 'Segoe UI', 'SF Pro Display', system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+    background: #0d1117;
+  }
+  .header {
+    position: relative;
+    width: 1600px;
+    height: 400px;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(234, 40, 69, 0.35) 0%, transparent 45%),
+      radial-gradient(circle at 85% 70%, rgba(120, 68, 255, 0.30) 0%, transparent 45%),
+      linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1030 100%);
+    color: #e6edf3;
+    padding: 56px 80px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr auto;
+    gap: 20px;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.06) 1px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(234, 40, 69, 0.22) 0%, transparent 65%);
+    filter: blur(30px);
+    pointer-events: none;
+  }
+  .brand-row {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 20px;
+    color: #8b949e;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    z-index: 2;
+  }
+  .brand-row .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #EA2845;
+    box-shadow: 0 0 12px rgba(234, 40, 69, 0.8);
+  }
+  .title-block {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 2;
+  }
+  h1 {
+    font-size: 84px;
+    line-height: 0.95;
+    font-weight: 800;
+    letter-spacing: -2px;
+    background: linear-gradient(90deg, #ffffff 0%, #c9d1d9 60%, #ff8fa3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 14px;
+  }
+  .subtitle {
+    font-size: 30px;
+    color: #d1d7de;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+  .subtitle strong { color: #ff5a7a; font-weight: 700; }
+  .rocket {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 220px;
+    line-height: 1;
+    align-self: center;
+    filter: drop-shadow(0 12px 40px rgba(234, 40, 69, 0.55));
+    z-index: 2;
+  }
+  .chips {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    z-index: 2;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    font-size: 17px;
+    font-weight: 500;
+    color: #e6edf3;
+    backdrop-filter: blur(8px);
+  }
+  .chip .bullet { width: 8px; height: 8px; border-radius: 50%; }
+  .chip.copilot .bullet { background: #ffffff; }
+  .chip.nest    .bullet { background: #EA2845; }
+  .chip.ts      .bullet { background: #3178C6; }
+  .chip.jest    .bullet { background: #C21325; }
+  .chip.owasp   .bullet { background: #FFD34E; }
+  .duration {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #EA2845 0%, #b81f36 100%);
+    border-radius: 999px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    box-shadow: 0 8px 24px rgba(234, 40, 69, 0.45);
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="brand-row">
+      <span class="dot"></span>
+      <span>GitHub Copilot · Workshop 2026</span>
+    </div>
+
+    <div class="title-block">
+      <h1>Copilot for NestJS</h1>
+      <div class="subtitle">From <strong>Prompt</strong> to <strong>Secure Code</strong></div>
+    </div>
+
+    <div class="rocket">🚀</div>
+
+    <div class="chips">
+      <span class="chip copilot"><span class="bullet"></span>GitHub Copilot</span>
+      <span class="chip nest"><span class="bullet"></span>NestJS</span>
+      <span class="chip ts"><span class="bullet"></span>TypeScript</span>
+      <span class="chip jest"><span class="bullet"></span>Jest</span>
+      <span class="chip owasp"><span class="bullet"></span>OWASP Top 10</span>
+      <span class="duration">⏱️ ~60 min</span>
+    </div>
+  </div>
+</body>
+</html>

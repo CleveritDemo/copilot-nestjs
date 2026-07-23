@@ -1,5 +1,7 @@
 <div align="center">
 
+  <img src="./assets/header_eng.png" alt="Copilot for NestJS - From Prompt to Secure Code" width="100%" />
+
   # 🚀 Copilot for NestJS: From Prompt to Secure Code
 
   ### Hands-on GitHub Copilot workshop for NestJS developers
