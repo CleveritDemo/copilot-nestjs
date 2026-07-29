@@ -192,11 +192,7 @@ getGreeting(name: string):
 
 Esperá 1 segundo. Copilot completa la firma y el cuerpo. Presioná `Tab` para aceptar.
 
-#### 2️⃣ Next Edit Suggestions (NES)
-
-En el mismo archivo, cambiá `getHello()` para que devuelva `'Hola Mundo!'`. Copilot detectará que probablemente querés cambiar el test en [`src/app.controller.spec.ts`](./src/app.controller.spec.ts) y te ofrecerá saltar allí. `Tab` para navegar, `Tab` para aceptar.
-
-#### 3️⃣ Inline Chat
+#### 2️⃣ Inline Chat
 
 Seleccioná el método `getHello()` y presioná `Ctrl+I` (`Cmd+I` en macOS). Escribí:
 
@@ -385,7 +381,7 @@ flowchart LR
     A[¿Qué querés hacer?] --> B{Muchos archivos<br/>y comandos?}
     B -- Sí --> C[Agent Mode]
     B -- No --> D{Varios archivos<br/>ya existentes?}
-    D -- Sí --> E[Edit Mode]
+    D -- Sí --> E[Plan Mode]
     D -- No --> F{Cambio pequeño<br/>y local?}
     F -- Sí --> G[Inline Chat]
     F -- No --> H[Ask Mode]
